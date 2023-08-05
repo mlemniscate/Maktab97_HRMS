@@ -1,0 +1,27 @@
+﻿@model EmployeeCreateDto
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>
+    <form method="post" asp-controller="Employee" asp-action="Create">
+        <input type="text" asp-for="FirstName" />
+        <input type="text" asp-for="LastName" />
+        <input type="text" asp-for="NationalCode" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    @if (ViewData["ExceptionMessage"] != null)
+    {
+            <div class="alert alert-danger">@ViewData["ExceptionMessage"]</div>
+    }
+</div>
+</body>
+</html>
