@@ -11,4 +11,9 @@ public class EmployeeDatabaseModel : Employee
         LastName = lastName;
         NationalCode = nationalCode;
     }
+    
+    public void AddLeaves(List<Leave> leaves)
+    {
+        base.leaves = leaves;
+    }
 }

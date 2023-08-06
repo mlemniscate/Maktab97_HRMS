@@ -2,6 +2,7 @@
 using Domain.Repository;
 using Persistence;
 using Newtonsoft.Json;
+using System.Diagnostics.Metrics;
 
 namespace Infrastructure.Repository;
 
@@ -40,10 +41,36 @@ public class EmployeeRepository : IEmployeeRepository
         dbContext.ExecuteCommand($"DELETE FROM Employees WHERE Id='{employee.Id}'");
     }
 
+    public Employee GetById(Guid id)
+    {
+        var json = dbContext.ExecuteQuery($"SELECT * FROM Employees WHERE Id='{id}'");
+        var employee = JsonConvert.DeserializeObject<List<EmployeeDatabaseModel>>(json)[0];
+        employee.AddLeaves(GetEmployeeLeaves(employee.Id));
+        return employee;
+    }
+
+    public void UpdateEmployeeLeaves(Employee employee)
+    {
+        dbContext.ExecuteCommand($"DELETE FROM Leaves WHERE EmployeeId='{employee.Id}'");
+        string addLeavesCommand = $"INSERT INTO Leaves VALUES ";
+        foreach (var employeeLeave in employee.Leaves)
+        {
+            addLeavesCommand += $"('{employeeLeave.Id}', '{employeeLeave.EmployeeId}', '{employeeLeave.FromDate}', '{employeeLeave.ToDate}'),";
+        }
+        dbContext.ExecuteCommand(addLeavesCommand.Remove(addLeavesCommand.Length - 1, 1));
+    }
+
     public IEnumerable<Employee> GetAll()
     {
         var json = dbContext.ExecuteQuery("SELECT * FROM Employees;");
         var employees = JsonConvert.DeserializeObject<List<EmployeeDatabaseModel>>(json);
         return employees;
+    }
+
+    private List<Leave> GetEmployeeLeaves(Guid employeeId)
+    {
+        var json = dbContext.ExecuteQuery($"SELECT * FROM Leaves WHERE EmployeeId='{employeeId}'");
+        var employeeLeaves = JsonConvert.DeserializeObject<List<Leave>>(json);
+        return employeeLeaves;
     }
 }
