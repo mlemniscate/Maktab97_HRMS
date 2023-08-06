@@ -1,21 +1,31 @@
-﻿namespace Domain;
+﻿using Domain.Exception;
+
+namespace Domain;
 
 public class Leave
 {
-    public Leave(Guid employeeId, DateTime fromDateTime, DateTime toDateTime)
+    public Leave(Guid employeeId, DateOnly fromDateTime, DateOnly toDateTime)
     {
         Id = Guid.NewGuid();
         EmployeeId = employeeId;
-        FromDateTime = fromDateTime;
-        ToDateTime = toDateTime;
+        SetDates(fromDateTime, toDateTime);
     }
 
     protected Leave() { }
 
     public Guid Id { get; }
     public Guid EmployeeId { get; private set; }
-    public DateTime FromDateTime { get; set; }
-    public DateTime ToDateTime { get; set; }
+    public DateOnly FromDate { get; set; }
+    public DateOnly ToDate { get; set; }
+
+    private void SetDates(DateOnly fromDateTime, DateOnly toDateTime)
+    {
+        if (fromDateTime > ToDate)
+            throw new FromDateBiggerThenToDateException();
+
+        FromDate = fromDateTime;
+        ToDate = toDateTime;
+    }
 }
 
 public class HourlyLeave

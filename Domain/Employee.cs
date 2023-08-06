@@ -6,6 +6,7 @@ namespace Domain;
 public class Employee
 {
     private readonly IEmployeeRepository employeeRepository;
+    protected List<Leave> leaves = new List<Leave>();
 
     public Employee(IEmployeeRepository employeeRepository,
         string? firstName, string? lastName, string? nationalCode)
@@ -26,18 +27,19 @@ public class Employee
 
     public string NationalCode { get; protected set; }
 
-    // public List<Leave> Leaves { get; private set; } = new List<Leave>();
+    public IReadOnlyList<Leave> Leaves => leaves.AsReadOnly();
+
     //
     // public List<HourlyLeave> HourlyLeaves { get; private set; } = new List<HourlyLeave>();
 
-    // public void AddLeave(Leave leave)
-    // {
-    //     var leaveCount = Leaves.Count + (HourlyLeaves.Sum(h => h.LeaveTime.Hour + h.LeaveTime.Minute) / 24);
-    //     if (leaveCount >= 26)
-    //         throw new System.Exception();
-    //
-    //     Leaves.Add(leave);
-    // }
+    public void AddLeave(Leave leave)
+    {
+        var leaveCount = Leaves.Sum(l => (l.FromDate.DayNumber - l.ToDate.DayNumber));
+        if (leaveCount >= 26)
+            throw new LeaveNotAllowedException();
+    
+        leaves.Add(leave);
+    }
 
     private void SetName(string firstName, string lastName)
     {

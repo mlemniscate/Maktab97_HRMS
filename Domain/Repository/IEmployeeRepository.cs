@@ -6,5 +6,7 @@ public interface IEmployeeRepository
     void Create(Employee employee);
     void Update(Employee employee);
     void Delete(Employee employee);
+    Employee GetById(Guid id);
+    void UpdateEmployeeLeaves(Employee employee);
     IEnumerable<Employee> GetAll();
 }
