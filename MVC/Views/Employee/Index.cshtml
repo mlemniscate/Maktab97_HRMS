@@ -11,6 +11,7 @@
             <p><span>FirstName : </span>@employee.FirstName</p>
             <p><span>LastName : </span>@employee.LastName</p>
             <p><span>NationalCode : </span>@employee.NationalCode</p>
+            <a class="btn btn-dark" asp-controller="Employee" asp-action="AddLeave" asp-route-id="@employee.Id">Add Leave + </a>
         </div>
     }
     

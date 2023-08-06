@@ -28,6 +28,12 @@ namespace MVC.Controllers
             return View();
         }
 
+        public ActionResult AddLeave(Guid id)
+        {
+            var employeeDto = employeeService.GetById(id);
+            return View(employeeDto);
+        }
+
         // POST: EmployeeController/Create
         [HttpPost]
         public ActionResult Create(EmployeeCreateDto employeeCreateDto)
@@ -38,6 +44,21 @@ namespace MVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex) 
+            {
+                ViewData["ExceptionMessage"] = ex.Message;
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddLeave(AddEmployeeLeaveDto addEmployeeLeaveDto)
+        {
+            try
+            {
+                employeeService.AddLeave(addEmployeeLeaveDto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
             {
                 ViewData["ExceptionMessage"] = ex.Message;
                 return View();
