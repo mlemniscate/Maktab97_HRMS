@@ -27,9 +27,22 @@ public class EmployeeService : IEmployeeService
         employeeRepository.Create(employee);
     }
 
+    public void AddLeave(AddEmployeeLeaveDto employeeLeaveDto)
+    {
+        var employee = employeeRepository.GetById(employeeLeaveDto.EmployeeId);
+        employee.AddLeave(new Leave(employeeLeaveDto.EmployeeId, employeeLeaveDto.FromDate, employeeLeaveDto.ToDate));
+        employeeRepository.UpdateEmployeeLeaves(employee);
+    }
+
     public IEnumerable<EmployeeDto> GetAll()
     {
         var employees = employeeRepository.GetAll();
         return mapper.Map<IEnumerable<EmployeeDto>>(employees);
+    }
+
+    public EmployeeDto GetById(Guid id)
+    {
+        var emlployee = employeeRepository.GetById(id);
+        return mapper.Map<EmployeeDto>(emlployee);
     }
 }
