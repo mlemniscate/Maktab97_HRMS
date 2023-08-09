@@ -9,5 +9,6 @@ public class EmployeeProfile : Profile
     public EmployeeProfile()
     {
         CreateMap<Employee, EmployeeDto>();
+        CreateMap<Leave, LeaveDto>();
     }
 }

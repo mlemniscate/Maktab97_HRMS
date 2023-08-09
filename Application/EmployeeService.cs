@@ -30,8 +30,9 @@ public class EmployeeService : IEmployeeService
     public void AddLeave(AddEmployeeLeaveDto employeeLeaveDto)
     {
         var employee = employeeRepository.GetById(employeeLeaveDto.EmployeeId);
-        employee.AddLeave(new Leave(employeeLeaveDto.EmployeeId, employeeLeaveDto.FromDate, employeeLeaveDto.ToDate));
-        employeeRepository.UpdateEmployeeLeaves(employee);
+        employee.AddLeave(new Leave(employeeLeaveDto.EmployeeId, employeeLeaveDto.FromDate, employeeLeaveDto.ToDate),
+            employeeRepository);
+        // employeeRepository.UpdateEmployeeLeaves(employee);
     }
 
     public IEnumerable<EmployeeDto> GetAll()

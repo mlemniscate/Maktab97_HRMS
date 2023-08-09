@@ -2,7 +2,6 @@
 using Domain.Repository;
 using Persistence;
 using Newtonsoft.Json;
-using System.Diagnostics.Metrics;
 
 namespace Infrastructure.Repository;
 
@@ -58,6 +57,12 @@ public class EmployeeRepository : IEmployeeRepository
             addLeavesCommand += $"('{employeeLeave.Id}', '{employeeLeave.EmployeeId}', '{employeeLeave.FromDate}', '{employeeLeave.ToDate}'),";
         }
         dbContext.ExecuteCommand(addLeavesCommand.Remove(addLeavesCommand.Length - 1, 1));
+    }
+
+    public void AddEmployeeLeave(Leave leave)
+    {
+        dbContext.ExecuteCommand($"INSERT INTO Leaves VALUES " + 
+                                 $"('{leave.Id}', '{leave.EmployeeId}', '{leave.FromDate}', '{leave.ToDate}');");
     }
 
     public IEnumerable<Employee> GetAll()

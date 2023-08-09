@@ -4,7 +4,7 @@ namespace Domain;
 
 public class Leave
 {
-    public Leave(Guid employeeId, DateOnly fromDateTime, DateOnly toDateTime)
+    public Leave(Guid employeeId, DateTime fromDateTime, DateTime toDateTime)
     {
         Id = Guid.NewGuid();
         EmployeeId = employeeId;
@@ -15,12 +15,12 @@ public class Leave
 
     public Guid Id { get; }
     public Guid EmployeeId { get; private set; }
-    public DateOnly FromDate { get; set; }
-    public DateOnly ToDate { get; set; }
+    public DateTime FromDate { get; set; }
+    public DateTime ToDate { get; set; }
 
-    private void SetDates(DateOnly fromDateTime, DateOnly toDateTime)
+    private void SetDates(DateTime fromDateTime, DateTime toDateTime)
     {
-        if (fromDateTime > ToDate)
+        if (fromDateTime > toDateTime)
             throw new FromDateBiggerThenToDateException();
 
         FromDate = fromDateTime;

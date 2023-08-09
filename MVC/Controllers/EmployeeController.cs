@@ -30,6 +30,7 @@ namespace MVC.Controllers
 
         public ActionResult AddLeave(Guid id)
         {
+            ViewData["ExceptionMessage"] = TempData["ExceptionMessage"];
             var employeeDto = employeeService.GetById(id);
             return View(employeeDto);
         }
@@ -56,12 +57,15 @@ namespace MVC.Controllers
             try
             {
                 employeeService.AddLeave(addEmployeeLeaveDto);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AddLeave), new {id = addEmployeeLeaveDto.EmployeeId});
             }
             catch (Exception ex)
             {
-                ViewData["ExceptionMessage"] = ex.Message;
-                return View();
+                TempData["ExceptionMessage"] = ex.Message;
+                return RedirectToAction(nameof(AddLeave), new
+                {
+                    id = addEmployeeLeaveDto.EmployeeId
+                }); 
             }
         }
         

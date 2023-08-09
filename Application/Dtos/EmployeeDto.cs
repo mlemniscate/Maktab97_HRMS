@@ -10,4 +10,5 @@ public class EmployeeDto
 
     public string? NationalCode { get; set; }
 
+    public List<LeaveDto> Leaves { get; set; }
 }

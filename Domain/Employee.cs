@@ -32,13 +32,14 @@ public class Employee
     //
     // public List<HourlyLeave> HourlyLeaves { get; private set; } = new List<HourlyLeave>();
 
-    public void AddLeave(Leave leave)
+    public void AddLeave(Leave leave, IEmployeeRepository repository)
     {
-        var leaveCount = Leaves.Sum(l => (l.FromDate.DayNumber - l.ToDate.DayNumber));
+        var leaveCount = Leaves.Sum(l => (l.FromDate.Date.DayOfYear - l.ToDate.Date.DayOfYear));
         if (leaveCount >= 26)
             throw new LeaveNotAllowedException();
     
         leaves.Add(leave);
+        repository.AddEmployeeLeave(leave);
     }
 
     private void SetName(string firstName, string lastName)

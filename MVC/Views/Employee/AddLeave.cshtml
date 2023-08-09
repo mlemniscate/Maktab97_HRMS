@@ -1,22 +1,35 @@
 ﻿
-@* <div class="d-flex employee-container"> *@
-@*     <p><span>Id : </span>@.Id</p> *@
-@*     <p><span>FirstName : </span>@employee.FirstName</p> *@
-@*     <p><span>LastName : </span>@employee.LastName</p> *@
-@*     <p><span>NationalCode : </span>@employee.NationalCode</p> *@
-@*     <a class="btn btn-dark" asp-controller="Employee" asp-action="AddLeave">Add Leave + </a> *@
-@* </div> *@
+@model EmployeeDto
+<div class="d-flex employee-container">
+    <p><span>Id : </span>@Model.Id</p>
+    <p><span>FirstName : </span>@Model.FirstName</p>
+    <p><span>LastName : </span>@Model.LastName</p>
+    <p><span>NationalCode : </span>@Model.NationalCode</p>
+</div>
 
-@* <form method="post" asp-controller="Employee" asp-action="Create"> *@
-@*     <input type="text" asp-for="FirstName" /> *@
-@*     <input type="text" asp-for="LastName" /> *@
-@*     <input type="text" asp-for="NationalCode" /> *@
-@*     <button type="submit" class="btn btn-primary">Submit</button> *@
-@* </form> *@
-@* @if (ViewData["ExceptionMessage"] != null) *@
-@* { *@
-@*     <div class="alert alert-danger">@ViewData["ExceptionMessage"]</div> *@
-@* } *@
+<div>
+    @foreach (var leave in Model.Leaves)
+    {
+        <div class="d-flex employee-container">
+            <p><span>Id : </span>@leave.Id</p>
+            <p><span>EmployeeId : </span>@leave.EmployeeId</p>
+            <p><span>FromDate : </span>@leave.FromDate</p>
+            <p><span>ToDate : </span>@leave.ToDate</p>
+        </div>
+    }
+</div>
+
+<form class="mt-4" method="post" asp-controller="Employee" asp-action="AddLeave" >
+    <input type="date" name="FromDate" />
+    <input type="date" name="ToDate" />
+    <input class="d-none" type="text" name="EmployeeId" value="@Model.Id"/>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@if (ViewData["ExceptionMessage"] != null)
+{
+    <div class="alert alert-danger">@ViewData["ExceptionMessage"]</div>
+}
 
 @{
 }
